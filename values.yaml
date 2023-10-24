@@ -1,0 +1,69 @@
+nameOverride: ""
+fullnameOverride: ""
+
+imagePullSecrets: []
+
+core:
+  internalUrl: http://core.osrd.svc.cluster.local
+  enabled: true
+  image: osrd/core
+  pullPolicy: IfNotPresent
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  annotations: {}
+  labels: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  env: {}
+
+editoast:
+  internalUrl: http://editoast.osrd.svc.cluster.local
+  enabled: true
+  image: osrd/editoast
+  pullPolicy: IfNotPresent
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  annotations: {}
+  labels: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  env: {}
+
+gateway:
+  enabled: true
+  image: osrd/gateway
+  pullPolicy: IfNotPresent
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  ingress:
+    enabled: false
+    className: ""
+    domain: osrd.local
+    secretName: osrd-gateway-tls
+    annotations: {}
+    tls: []
+  annotations: {}
+  labels: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  env: {}
+  config:
+    trusted_proxies:
+      - "10.0.0.0/8"
+      - "172.16.0.0/12"
+      - "192.168.0.0/16"

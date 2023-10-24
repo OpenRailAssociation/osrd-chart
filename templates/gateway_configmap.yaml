@@ -1,0 +1,30 @@
+{{- if .Values.gateway.enabled -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "osrd.fullname" . }}-gateway-config
+data:
+  config.toml: |
+    {{- $config := .Values.gateway.config }}
+    listen_addr = "0.0.0.0"
+    port = {{ .Values.gateway.service.targetPort }}
+    static_folder = "/srv/front"
+    trusted_proxies = [{{ range $index, $proxy := $config.trusted_proxies }}{{ if $index }}, {{ end }}"{{ $proxy }}"{{ end }}]
+
+    [import_meta_env]
+    filename = "index.html"
+    also_serve_root = true
+    env_vars = [
+      "OSRD_API_URL",
+      "OSRD_EDITOAST_URL",
+      "OSRD_SENTRY_DSN",
+      "OSRD_SENTRY_ENVIRONMENT"
+    ]
+
+    [[targets]]
+    prefix = "/api"
+    upstream = "{{ .Values.editoast.internalUrl }}"
+    remove_prefix = true
+
+{{- end }}

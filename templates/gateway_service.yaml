@@ -1,0 +1,19 @@
+{{- if .Values.gateway.enabled -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "osrd.fullname" . }}-gateway
+  labels:
+    {{- include "osrd.labels.gateway" . | nindent 4 }}
+spec:
+  type: {{ .Values.gateway.service.type }}
+  ports:
+    - port: {{ .Values.gateway.service.port }}
+      targetPort: {{ .Values.gateway.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "osrd.selectorLabels.gateway" . | nindent 4 }}
+
+{{- end }}

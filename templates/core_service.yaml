@@ -1,0 +1,19 @@
+{{- if .Values.core.enabled -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "osrd.fullname" . }}-core
+  labels:
+    {{- include "osrd.labels.core" . | nindent 4 }}
+spec:
+  type: {{ .Values.core.service.type }}
+  ports:
+    - port: {{ .Values.core.service.port }}
+      targetPort: {{ .Values.core.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "osrd.selectorLabels.core" . | nindent 4 }}
+
+{{- end }}

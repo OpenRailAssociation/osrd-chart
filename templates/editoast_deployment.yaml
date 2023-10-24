@@ -1,0 +1,70 @@
+{{- if .Values.editoast.enabled -}}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "osrd.fullname" . }}-editoast
+  labels:
+    {{- include "osrd.labels.editoast" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.editoast.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "osrd.selectorLabels.editoast" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.editoast.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "osrd.labels.editoast" . | nindent 8 }}
+	      {{- with .Values.editoast.labels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}-editoast
+          image: "{{ .Values.editoast.image }}"
+          imagePullPolicy: {{ .Values.editoast.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.editoast.service.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          env:
+            {{- range $key, $value := .Values.editoast.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            - name: EDITOAST_PORT
+              value: "{{ .Values.editoast.service.targetPort }}"
+            - name: OSRD_BACKEND_URL
+              value: {{ .Values.core.internalUrl }}
+          resources:
+            {{- toYaml .Values.editoast.resources | nindent 12 }}
+      {{- with .Values.editoast.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.editoast.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.editoast.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
+{{- end }}
