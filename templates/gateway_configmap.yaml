@@ -9,22 +9,53 @@ data:
     {{- $config := .Values.gateway.config }}
     listen_addr = "0.0.0.0"
     port = {{ .Values.gateway.service.targetPort }}
-    static_folder = "/srv/front"
+    secret_key = "{{ $config.secretKey }}"
     trusted_proxies = [{{ range $index, $proxy := $config.trusted_proxies }}{{ if $index }}, {{ end }}"{{ $proxy }}"{{ end }}]
 
-    [import_meta_env]
+    [static_files]
+    root_folder = "/srv/front"
+
+    [static_files.import_meta_env]
     filename = "index.html"
     also_serve_root = true
     env_vars = [
-      "OSRD_API_URL",
-      "OSRD_EDITOAST_URL",
+      "OSRD_BACKEND_URL",
       "OSRD_SENTRY_DSN",
-      "OSRD_SENTRY_ENVIRONMENT"
+      "OSRD_SENTRY_ENVIRONMENT",
+      "OSRD_GIT_DESCRIBE",
     ]
 
     [[targets]]
     prefix = "/api"
     upstream = "{{ .Values.editoast.internalUrl }}"
-    remove_prefix = true
+    require_auth = true
 
+    {{- if $config.auth }}
+    [auth]
+    session_namespace = "{{ $config.auth.session_namespace }}"
+    default_provider = "{{ $config.auth.default_provider }}"
+
+    {{- range $provider := $config.auth.providers }}
+    [[auth.providers]]
+    type = "{{ $provider.type }}"
+    provider_id = "{{ $provider.provider_id }}"
+    {{- if eq $provider.type "Mocked" }}
+    username = "{{ $provider.username }}"
+    require_login = {{ $provider.require_login }}
+    {{- else if eq $provider.type "Bearer" }}
+    tokens = {
+    {{- range $key, $value := $provider.tokens }}
+      "{{ $key }}" = "{{ $value }}",
+    {{- end }}
+    }
+    {{- else if eq $provider.type "Oidc" }}
+    issuer_url = "{{ $provider.issuer_url }}"
+    post_login_url = "{{ $provider.post_login_url }}"
+    callback_url = "{{ $provider.callback_url }}"
+    client_id = "{{ $provider.client_id }}"
+    client_secret = "{{ $provider.client_secret }}"
+    {{- end }}
+    {{- end }}
+
+    {{- end }}
 {{- end }}
