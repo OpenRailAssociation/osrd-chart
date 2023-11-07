@@ -19,7 +19,7 @@ core:
   tolerations: []
   affinity: {}
   resources: {}
-  env: {}
+  env: []
 
 editoast:
   internalUrl: http://editoast.osrd.svc.cluster.local
@@ -37,7 +37,7 @@ editoast:
   tolerations: []
   affinity: {}
   resources: {}
-  env: {}
+  env: []
 
 gateway:
   enabled: true
@@ -61,7 +61,7 @@ gateway:
   tolerations: []
   affinity: {}
   resources: {}
-  env: {}
+  env: []
   config:
     secretKey: "changeme"
     trusted_proxies:

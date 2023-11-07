@@ -44,9 +44,8 @@ spec:
               path: /health
               port: http
           env:
-            {{- range $key, $value := .Values.editoast.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
+            {{- with .Values.editoast.env }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
             - name: EDITOAST_PORT
               value: "{{ .Values.editoast.service.targetPort }}"

@@ -47,9 +47,8 @@ spec:
             - name: config
               mountPath: /config
           env:
-            {{- range $key, $value := .Values.gateway.env }}
-            - name: {{ $key }}
-              value: {{ $value | quote }}
+            {{- with .Values.editoast.env }}
+            {{- toYaml . | nindent 12 }}
             {{- end }}
             - name: MIDDLEWARE_BASE_URL
               value: {{ .Values.editoast.internalUrl }}
