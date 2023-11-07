@@ -25,6 +25,13 @@ data:
       "OSRD_GIT_DESCRIBE",
     ]
 
+    {{- if .Values.tileServer.enabled }}
+    [[targets]]
+    prefix = "/api/layers"
+    upstream = "{{ .Values.tileServer.internalUrl }}/layers/"
+    require_auth = true
+    {{- end }}
+
     [[targets]]
     prefix = "/api"
     upstream = "{{ .Values.editoast.internalUrl }}"

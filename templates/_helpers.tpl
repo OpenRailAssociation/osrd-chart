@@ -71,6 +71,26 @@ app.kubernetes.io/instance: {{ .Release.Name }}-editoast
 {{- end }}
 
 {{/*
+Common labels Tile Server
+*/}}
+{{- define "osrd.labels.tileServer" -}}
+helm.sh/chart: {{ include "osrd.chart" . }}
+{{ include "osrd.selectorLabels.tileServer" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels Tile Server
+*/}}
+{{- define "osrd.selectorLabels.tileServer" -}}
+app.kubernetes.io/name: {{ include "osrd.name" . }}-tile-server
+app.kubernetes.io/instance: {{ .Release.Name }}-tile-server
+{{- end }}
+
+{{/*
 Common labels Gateway
 */}}
 {{- define "osrd.labels.gateway" -}}

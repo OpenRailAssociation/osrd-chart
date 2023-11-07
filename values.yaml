@@ -4,7 +4,7 @@ fullnameOverride: ""
 imagePullSecrets: []
 
 core:
-  internalUrl: http://core.osrd.svc.cluster.local
+  internalUrl: http://osrd-core.osrd.svc.cluster.local
   enabled: true
   image: osrd/core
   pullPolicy: IfNotPresent
@@ -22,7 +22,7 @@ core:
   env: []
 
 editoast:
-  internalUrl: http://editoast.osrd.svc.cluster.local
+  internalUrl: http://osrd-editoast.osrd.svc.cluster.local
   enabled: true
   image: osrd/editoast
   pullPolicy: IfNotPresent
@@ -31,6 +31,29 @@ editoast:
     type: ClusterIP
     port: 80
     targetPort: 80
+  annotations: {}
+  labels: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  env: []
+
+tileServer:
+  internalUrl: http://osrd-tile-server.osrd.svc.cluster.local
+  enabled: false
+  image: osrd/editoast
+  pullPolicy: IfNotPresent
+  replicaCount: 2
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  hpa:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
   annotations: {}
   labels: {}
   nodeSelector: {}
