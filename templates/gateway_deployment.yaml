@@ -43,9 +43,7 @@ spec:
             {{- with .Values.gateway.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            - name: MIDDLEWARE_BASE_URL
-              value: {{ .Values.editoast.internalUrl }}
-            - name: PORT
+            - name: GATEWAY_PORT
               value: "{{ .Values.gateway.service.port }}"
           resources:
             {{- toYaml .Values.gateway.resources | nindent 12 }}
