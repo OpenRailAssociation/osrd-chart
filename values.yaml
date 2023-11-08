@@ -85,6 +85,8 @@ gateway:
   affinity: {}
   resources: {}
   env: []
+  volumes: []
+  volumeMounts: []
   config:
     secretKey: "changeme"
     trusted_proxies:

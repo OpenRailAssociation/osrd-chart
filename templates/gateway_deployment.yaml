@@ -39,6 +39,9 @@ spec:
             - name: config
               mountPath: /srv/gateway.toml
               subPath: gateway.toml
+            {{- with .Values.gateway.volumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           env:
             {{- with .Values.gateway.env }}
             {{- toYaml . | nindent 12 }}
@@ -51,6 +54,9 @@ spec:
         - name: config
           configMap:
             name: {{ include "osrd.fullname" . }}-gateway-config
+        {{- with .Values.gateway.volumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       {{- with .Values.gateway.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
