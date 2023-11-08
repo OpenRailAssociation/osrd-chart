@@ -37,7 +37,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: config
-              mountPath: /config
+              mountPath: /gateway.toml
               subPath: gateway.toml
           env:
             {{- with .Values.gateway.env }}
