@@ -40,7 +40,7 @@ spec:
               mountPath: /config
               subPath: gateway.toml
           env:
-            {{- with .Values.editoast.env }}
+            {{- with .Values.gateway.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
             - name: MIDDLEWARE_BASE_URL
