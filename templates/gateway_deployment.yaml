@@ -46,6 +46,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config
+              subPath: gateway.toml
           env:
             {{- with .Values.editoast.env }}
             {{- toYaml . | nindent 12 }}

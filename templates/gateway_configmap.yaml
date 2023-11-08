@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "osrd.fullname" . }}-gateway-config
 data:
-  config.toml: |
+  gateway.toml: |
     {{- $config := .Values.gateway.config }}
     listen_addr = "0.0.0.0"
     port = {{ .Values.gateway.service.targetPort }}
