@@ -90,6 +90,14 @@ gateway:
   volumeMounts: []
   config:
     secretKey: "changeme"
+    auth:
+      session_namespace: null
+      default_provider: null
+      providers:
+        - type: "Mocked"
+          provider_id: "mocked"
+          username: "osrd-admin"
+          require_login: true
     trusted_proxies:
       - "10.0.0.0/8"
       - "172.16.0.0/12"

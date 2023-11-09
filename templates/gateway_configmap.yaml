@@ -30,8 +30,12 @@ data:
 
     {{- if $config.auth }}
     [auth]
-    session_namespace = "{{ $config.auth.session_namespace }}"
-    default_provider = "{{ $config.auth.default_provider }}"
+    {{- if .Values.auth.session_namespace }}
+    session_namespace = "{{ .Values.auth.session_namespace }}"
+    {{- end }}
+    {{- if .Values.auth.default_provider }}
+    default_provider = "{{ .Values.auth.default_provider }}"
+    {{- end }}
 
     {{- range $provider := $config.auth.providers }}
     [[auth.providers]]
