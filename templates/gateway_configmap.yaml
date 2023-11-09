@@ -28,7 +28,7 @@ data:
     {{- if .Values.tileServer.enabled }}
     [[targets]]
     prefix = "/api/layers"
-    upstream = "{{ .Values.tileServer.internalUrl }}/layers/"
+    upstream = "{{ .Values.tileServer.internalUrl }}/layers"
     require_auth = true
     {{- end }}
 
