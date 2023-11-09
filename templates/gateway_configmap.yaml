@@ -29,11 +29,11 @@ data:
 
     {{- if $config.auth }}
     [auth]
-    {{- if .Values.auth.session_namespace }}
-    session_namespace = "{{ .Values.auth.session_namespace }}"
+    {{- if $config.auth.session_namespace }}
+    session_namespace = "{{ $config.auth.session_namespace }}"
     {{- end }}
-    {{- if .Values.auth.default_provider }}
-    default_provider = "{{ .Values.auth.default_provider }}"
+    {{- if $config.auth.default_provider }}
+    default_provider = "{{ $config.auth.default_provider }}"
     {{- end }}
 
     {{- range $provider := $config.auth.providers }}
