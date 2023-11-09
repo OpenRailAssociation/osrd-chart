@@ -74,7 +74,8 @@ gateway:
   ingress:
     enabled: false
     className: ""
-    domain: osrd.local
+    domains:
+      - osrd.local
     secretName: osrd-gateway-tls
     annotations: {}
     tls: []

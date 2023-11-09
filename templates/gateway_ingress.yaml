@@ -1,6 +1,7 @@
 {{- if .Values.gateway.ingress.enabled -}}
 {{- $fullName := include "osrd.fullname" . -}}
 {{- $svcPort := .Values.gateway.service.port -}}
+{{- $k8sVersion := .Capabilities.KubeVersion.GitVersion -}}
 
 {{- if and .Values.gateway.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
   {{- if not (hasKey .Values.gateway.ingress.annotations "kubernetes.io/ingress.class") }}
@@ -29,22 +30,27 @@ spec:
   {{- if and .Values.gateway.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.gateway.ingress.className }}
   {{- end }}
+
   {{- if .Values.gateway.ingress.tls }}
   tls:
   - hosts:
-      - {{ .Values.gateway.ingress.domain }}
+      {{- with .Values.gateway.ingress.domains }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
     secretName: {{ .Values.gateway.ingress.secretName }}
   {{- end }}
+
   rules:
-    - host: {{ .Values.gateway.ingress.domain }}
+    {{- range .Values.gateway.ingress.domains }}
+    - host: {{ . }}
       http:
         paths:
           - path: /
-            {{- if semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion }}
+            {{- if semverCompare ">=1.18-0" $k8sVersion }}
             pathType: Prefix
             {{- end }}
             backend:
-              {{- if semverCompare ">=1.19-0" .Capabilities.KubeVersion.GitVersion }}
+              {{- if semverCompare ">=1.19-0" $k8sVersion }}
               service:
                 name: {{ $fullName }}-gateway
                 port:
@@ -53,4 +59,5 @@ spec:
               serviceName: {{ $fullName }}-gateway
               servicePort: {{ $svcPort }}
               {{- end }}
+    {{- end }}
 {{- end }}
