@@ -9,7 +9,6 @@ data:
     {{- $config := .Values.gateway.config }}
     listen_addr = "0.0.0.0"
     port = {{ .Values.gateway.service.targetPort }}
-    secret_key = "{{ $config.secretKey }}"
     trusted_proxies = [{{ range $index, $proxy := $config.trusted_proxies }}{{ if $index }}, {{ end }}"{{ $proxy }}"{{ end }}]
 
     [static_files]
