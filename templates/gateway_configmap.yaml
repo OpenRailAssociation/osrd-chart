@@ -14,16 +14,7 @@ data:
 
     [static_files]
     root_folder = "/srv/front"
-
-    [static_files.import_meta_env]
-    filename = "index.html"
-    also_serve_root = true
-    env_vars = [
-      "OSRD_BACKEND_URL",
-      "OSRD_SENTRY_DSN",
-      "OSRD_SENTRY_ENVIRONMENT",
-      "OSRD_GIT_DESCRIBE",
-    ]
+    redirect_404_to_index = true
 
     {{- if .Values.tileServer.enabled }}
     [[targets]]
