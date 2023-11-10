@@ -29,9 +29,6 @@ data:
 
     {{- if $config.auth }}
     [auth]
-    {{- if $config.auth.session_namespace }}
-    session_namespace = "{{ $config.auth.session_namespace }}"
-    {{- end }}
     {{- if $config.auth.default_provider }}
     default_provider = "{{ $config.auth.default_provider }}"
     {{- end }}
