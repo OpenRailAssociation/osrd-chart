@@ -32,6 +32,9 @@ editoast:
     port: 80
     targetPort: 80
   annotations: {}
+  init:
+    enabled: true
+    extend: ""
   labels: {}
   nodeSelector: {}
   tolerations: []

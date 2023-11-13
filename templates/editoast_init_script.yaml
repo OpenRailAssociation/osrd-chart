@@ -1,0 +1,16 @@
+{{- if .Values.editoast.init.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "osrd.fullname" . }}-editoast-init
+data:
+  script.sh: |
+    #!/bin/sh
+    set -e
+    
+    {{- with .Values.editoast.init.extend }}
+    {{ . }}
+    {{- end }}
+    export DATABASE_URL="postgres://${PSQL_USERNAME}:${PSQL_PASSWORD}@${PSQL_HOST}:${PSQL_PORT}/${PSQL_DATABASE}"
+    diesel migration run
+{{- end }}
