@@ -6,6 +6,10 @@ metadata:
   name: {{ include "osrd.fullname" . }}-core
   labels:
     {{- include "osrd.labels.core" . | nindent 4 }}
+  {{- with .Values.core.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.core.replicaCount }}
   selector:
@@ -13,13 +17,14 @@ spec:
       {{- include "osrd.selectorLabels.core" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.core.annotations }}
       annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+        {{- with .Values.core.annotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "osrd.labels.core" . | nindent 8 }}
-	      {{- with .Values.core.labels }}
+        {{- with .Values.core.labels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:

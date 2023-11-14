@@ -6,6 +6,10 @@ metadata:
   name: {{ include "osrd.fullname" . }}-gateway
   labels:
     {{- include "osrd.labels.gateway" . | nindent 4 }}
+  {{- with .Values.gateway.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.gateway.replicaCount }}
   selector:
@@ -13,13 +17,14 @@ spec:
       {{- include "osrd.selectorLabels.gateway" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.gateway.annotations }}
       annotations:
+        rollme: {{ randAlphaNum 5 | quote }}
+        {{- with .Values.gateway.annotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "osrd.labels.gateway" . | nindent 8 }}
-	      {{- with .Values.gateway.labels }}
+        {{- with .Values.gateway.labels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
