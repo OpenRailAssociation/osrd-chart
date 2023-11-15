@@ -33,7 +33,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}-tile-server
+        - name: {{ include "osrd.name" . }}-tile-server
           image: "{{ .Values.tileServer.image }}"
           imagePullPolicy: {{ .Values.tileServer.pullPolicy }}
           ports:

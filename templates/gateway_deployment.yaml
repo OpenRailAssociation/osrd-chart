@@ -33,7 +33,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ .Chart.Name }}-gateway
+        - name: {{ include "osrd.name" . }}-gateway
           image: "{{ .Values.gateway.image }}"
           imagePullPolicy: {{ .Values.gateway.pullPolicy }}
           ports:
