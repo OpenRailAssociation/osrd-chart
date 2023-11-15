@@ -49,10 +49,10 @@ spec:
               path: /health
               port: http
           env:
-            {{- with .Values.editoast.env }}
+            {{- with .Values.core.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            - name: MIDDLEWARE_BASE_URL
+            - name: CORE_EDITOAST_URL
               value: {{ .Values.editoast.internalUrl }}
             - name: CORE_PORT
               value: "{{ .Values.core.service.targetPort }}"
