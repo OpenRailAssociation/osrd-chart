@@ -41,11 +41,10 @@ data:
     username = "{{ $provider.username }}"
     require_login = {{ $provider.require_login }}
     {{- else if eq $provider.type "Bearer" }}
-    tokens = {
+    [auth.providers.tokens]
     {{- range $key, $value := $provider.tokens }}
-      "{{ $key }}" = "{{ $value }}",
+    "{{ $key }}" = "{{ $value }}"
     {{- end }}
-    }
     {{- else if eq $provider.type "Oidc" }}
     issuer_url = "{{ $provider.issuer_url }}"
     post_login_url = "{{ $provider.post_login_url }}"
