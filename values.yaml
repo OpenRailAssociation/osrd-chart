@@ -98,6 +98,11 @@ gateway:
           provider_id: "mocked"
           username: "osrd-admin"
           require_login: false
+    tracing:
+      enabled: false
+      type: ""
+      endpoint: ""
+      service_name: "osrd-gateway"
     trusted_proxies:
       - "10.0.0.0/8"
       - "172.16.0.0/12"

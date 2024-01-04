@@ -15,6 +15,13 @@ data:
     root_folder = "/srv/front"
     redirect_404_to_index = true
 
+    {{- if $config.tracing.enabled }}
+    [telemetry.tracing]
+    type = "{{ $config.tracing.type }}"
+    endpoint = "{{ $config.tracing.endpoint }}"
+    service_name = "{{ $config.tracing.service_name }}"
+    {{- end }}
+
     {{- if .Values.tileServer.enabled }}
     [[targets]]
     prefix = "/api/layers"
