@@ -101,8 +101,7 @@ gateway:
     tracing:
       enabled: false
       type: ""
-      endpoint: ""
-      service_name: "osrd-gateway"
+      config: {}
     trusted_proxies:
       - "10.0.0.0/8"
       - "172.16.0.0/12"
