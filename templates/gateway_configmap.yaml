@@ -18,8 +18,6 @@ data:
     {{- if $config.tracing.enabled }}
     [telemetry.tracing]
     type = "{{ $config.tracing.type }}"
-    endpoint = "{{ $config.tracing.endpoint }}"
-    service_name = "{{ $config.tracing.service_name }}"
     {{- range $key, $value := $config.tracing.config }}
     "{{ $key }}" = "{{ $value }}"
     {{- end }}
