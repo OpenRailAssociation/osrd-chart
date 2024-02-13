@@ -46,6 +46,7 @@ spec:
               port: http
             initialDelaySeconds: {{ .Values.core.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.core.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.core.livenessProbe.timeoutSeconds }}
           readinessProbe:
             httpGet:
               path: /health
