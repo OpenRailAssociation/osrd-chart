@@ -13,6 +13,9 @@ core:
     type: ClusterIP
     port: 80
     targetPort: 80
+  livenessProbe:
+    initialDelaySeconds: 30
+    periodSeconds: 60
   annotations: {}
   labels: {}
   nodeSelector: {}
