@@ -1,0 +1,368 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$defs": {
+    "commonOsrdService": {
+      "type": "object",
+      "description": "Core deployment values",
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "description": "Enable or disable the service"
+        },
+        "image": {
+          "type": "string",
+          "description": "Image to use for the service"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "description": "Image pull policy"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "description": "Default number of replicas"
+        },
+        "service": {
+          "type": "object",
+          "description": "Kubernetes Service configuration",
+          "properties": {
+            "type": {
+              "type": "string",
+              "description": "Service type (ClusterIP, NodePort, LoadBalancer, ...)"
+            },
+            "port": {
+              "type": "integer",
+              "description": "Service port"
+            },
+            "targetPort": {
+              "type": "integer",
+              "description": "Service target port"
+            }
+          },
+          "required": [
+            "type",
+            "port"
+          ]
+        },
+        "livenessProbe": {
+          "type": "object",
+          "description": "Liveness probe configuration",
+          "properties": {
+            "initialDelaySeconds": {
+              "type": "integer",
+              "description": "Number of seconds after the container has started before liveness probes are initiated"
+            },
+            "periodSeconds": {
+              "type": "integer",
+              "description": "How often (in seconds) to perform the probe"
+            },
+            "timeoutSeconds": {
+              "type": "integer",
+              "description": "Number of seconds after which the probe times out"
+            }
+          },
+          "required": []
+        },
+        "annotations": {
+          "type": "object",
+          "description": "Annotations to add to the service",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "labels": {
+          "type": "object",
+          "description": "Labels to add to the service",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "nodeSelector": {
+          "type": "object",
+          "description": "Node selector to apply to the service",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "tolerations": {
+          "type": "array",
+          "description": "Tolerations to apply to the service",
+          "items": {
+            "type": "object"
+          }
+        },
+        "affinity": {
+          "type": "object",
+          "description": "Affinity to apply to the service"
+        },
+        "resources": {
+          "type": "object",
+          "description": "Resources to ive to the service"
+        },
+        "env": {
+          "type": "array",
+          "description": "Environment variables to set",
+          "items": {
+            "type": "object"
+          }
+        }
+      },
+      "required": [
+        "enabled",
+        "image",
+        "pullPolicy",
+        "replicaCount",
+        "service"
+      ]
+    }
+  },
+  "title": "Values",
+  "type": "object",
+  "properties": {
+    "nameOverride": {
+      "type": "string",
+      "description": "String to partially override common.names.fullname template with a string (will prepend the release name)"
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "description": "String to fully override common.names.fullname template with a string"
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "description": "Image pull secrets",
+      "items": {
+        "type": "object"
+      }
+    },
+    "core": {
+      "type": "object",
+      "description": "Core deployment values",
+      "allOf": [
+        {
+          "$ref": "#/$defs/commonOsrdService"
+        },
+        {
+          "properties": {
+            "internalUrl": {
+              "type": "string",
+              "description": "Internal URL for the service"
+            },
+            "config": {
+              "type": "object",
+              "properties": {
+                "telemetry": {
+                  "type": "string",
+                  "description": "Activate the telemtry by specifying the backend to use with Core"
+                }
+              }
+            }
+          },
+          "required": [
+            "internalUrl"
+          ]
+        }
+      ]
+    },
+    "editoast": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/commonOsrdService"
+        },
+        {
+          "properties": {
+            "init": {
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable or disable the initialization"
+                },
+                "extend": {
+                  "type": "string",
+                  "description": "Extend the initialization with custom shell script"
+                },
+                "internalUrl": {
+                  "type": "string",
+                  "description": "Internal URL for the service"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "tileServer": {
+      "allOf": [
+        {
+          "$ref": "#/properties/editoast"
+        },
+        {
+          "properties": {
+            "hpa": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "minReplicas": {
+                  "type": "integer"
+                },
+                "maxReplicas": {
+                  "type": "integer"
+                },
+                "targetCPUUtilizationPercentage": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "enabled",
+                "minReplicas",
+                "maxReplicas",
+                "targetCPUUtilizationPercentage"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "gateway": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/commonOsrdService"
+        },
+        {
+          "properties": {
+            "ingress": {
+              "type": "object",
+              "description": "Ingress configuration",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "description": "Enable or disable the ingress"
+                },
+                "className": {
+                  "type": "string",
+                  "description": "Ingress class name"
+                },
+                "domains": {
+                  "type": "array",
+                  "description": "Domains to use for the ingress",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "secretName": {
+                  "type": "string",
+                  "description": "Secret name to use for the TLS configuration of the ingress"
+                },
+                "annotations": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "description": "Annotations to add to the ingress"
+                },
+                "tls": {
+                  "type": "array",
+                  "description": "TLS configuration for the ingress",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              },
+              "required": [
+                "enabled"
+              ]
+            },
+            "volumes": {
+              "type": "array",
+              "description": "Volumes to mount",
+              "items": {
+                "type": "object"
+              }
+            },
+            "volumeMounts": {
+              "type": "array",
+              "description": "Volume mounts to apply",
+              "items": {
+                "type": "object"
+              }
+            },
+            "config": {
+              "type": "object",
+              "description": "Gateway configuration",
+              "properties": {
+                "auth": {
+                  "type": "object",
+                  "description": "Authentication configuration",
+                  "properties": {
+                    "providers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "provider_id": {
+                            "type": "string"
+                          },
+                          "username": {
+                            "type": "string"
+                          },
+                          "require_login": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "type",
+                          "provider_id"
+                        ]
+                      }
+                    }
+                  }
+                },
+                "tracing": {
+                  "type": "object",
+                  "description": "Tracing configuration",
+                  "properties": {
+                    "enabled": {
+                      "type": "boolean",
+                      "description": "Enable or disable the tracing"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Tracing type (jaeger, zipkin, ...)"
+                    },
+                    "config": {
+                      "type": "object",
+                      "description": "Tracing configuration"
+                    }
+                  },
+                  "required": [
+                    "enabled"
+                  ]
+                },
+                "trusted_proxies": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "required": [
+                "auth",
+                "tracing",
+                "trusted_proxies"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  },
+  "required": [
+    "core",
+    "editoast",
+    "gateway",
+    "tileServer"
+  ]
+}
