@@ -24,6 +24,8 @@ core:
   affinity: {}
   resources: {}
   env: []
+  config:
+    telemetry: null
 
 editoast:
   internalUrl: http://osrd-editoast.osrd.svc.cluster.local

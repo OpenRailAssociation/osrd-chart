@@ -59,13 +59,13 @@ spec:
               value: {{ .Values.editoast.internalUrl }}
             - name: CORE_PORT
               value: "{{ .Values.core.service.targetPort }}"
-            {{- if .Values.core.service.telemetry }}
+            {{- if .Values.core.config.telemetry }}
             - name: CORE_MONITOR_TYPE
-              value: "{{ .Values.core.service.telemetry }}"
+              value: "{{ .Values.core.config.telemetry }}"
             - name: JAVA_TOOL_OPTIONS
-              value: {{ if eq .Values.core.service.telemetry "opentelemetry" -}}
+              value: {{ if eq .Values.core.config.telemetry "opentelemetry" -}}
                 "-javaagent:/app/opentelemetry-javaagent.jar"
-              {{- else if eq .Values.core.service.telemetry "datadog" -}}
+              {{- else if eq .Values.core.config.telemetry "datadog" -}}
                 "-javaagent:/app/dd-java-agent.jar"
               {{- end -}}
             {{- end }}
