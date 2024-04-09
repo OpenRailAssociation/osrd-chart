@@ -11,19 +11,18 @@ This repository contains Helm charts for deploying OSRD, which consists of three
 - Kubernetes cluster
 - Helm installed
 
-
 ## Deploying the Application
 
 After adding the repository, you can deploy the application using the following command:
 
 ```
-helm install osrd oci://ghcr.io/osrd-project/charts/osrd --version 0.1.0
+helm install osrd oci://ghcr.io/openrailassociation/osrd-charts/osrd --version 0.1.0
 ```
 
 If you want to use the latest build of the helm chart (not the latest released) you can use
 
 ```
-helm install osrd oci://ghcr.io/osrd-project/charts/osrd-dev --version 0.1.XXX
+helm install osrd oci://ghcr.io/openrailassociation/osrd-charts/osrd-dev --version 0.1.XXX
 ```
 
 ## Configuration
