@@ -150,7 +150,7 @@
               "type": "object",
               "properties": {
                 "telemetry": {
-                  "type": "string",
+                  "type": ["string", "null"],
                   "description": "Activate the telemtry by specifying the backend to use with Core"
                 }
               }
