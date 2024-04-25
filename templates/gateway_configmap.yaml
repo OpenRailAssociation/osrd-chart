@@ -62,7 +62,7 @@ data:
     {{- if $provider.username_whitelist }}
     username_whitelist = [
       {{- range $username := $provider.username_whitelist }}
-        "{{ username }}",
+        "{{ $username }}",
       {{- end }}
     ]
     {{- if $provider.profile_scope_override }}
