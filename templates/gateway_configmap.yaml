@@ -59,6 +59,13 @@ data:
     callback_url = "{{ $provider.callback_url }}"
     client_id = "{{ $provider.client_id }}"
     client_secret = "{{ $provider.client_secret }}"
+    {{- if $provider.username_whitelist }}
+    username_whitelist = [
+      {{- range $username := $provider.username_whitelist }}
+        "{{ $username }}",
+      {{- end }}
+    ]
+    {{- end }}
     {{- if $provider.profile_scope_override }}
     profile_scope_override = "{{ $provider.profile_scope_override }}"
     {{- end }}
