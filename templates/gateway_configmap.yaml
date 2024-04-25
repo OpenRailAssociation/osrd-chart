@@ -65,6 +65,7 @@ data:
         "{{ username }}",
       {{- end }}
     ]
+    {{- end }}
     {{- if $provider.profile_scope_override }}
     profile_scope_override = "{{ $provider.profile_scope_override }}"
     {{- end }}
