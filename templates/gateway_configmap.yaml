@@ -69,6 +69,14 @@ data:
     {{- if $provider.profile_scope_override }}
     profile_scope_override = "{{ $provider.profile_scope_override }}"
     {{- end }}
+    {{- if $provider.acr }}
+    acr = "{{ $provider.acr }}"
+    amr = [
+    {{- range $provider.amr }}
+    "{{ . }}",
+    {{- end }}
+    ]
+    {{- end }}
     {{- end }}
     {{- end }}
 
