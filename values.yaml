@@ -37,6 +37,10 @@ editoast:
     type: ClusterIP
     port: 80
     targetPort: 80
+  livenessProbe:
+    initialDelaySeconds: 0
+    periodSeconds: 10
+    timeoutSeconds: 1
   annotations: {}
   init:
     enabled: true
