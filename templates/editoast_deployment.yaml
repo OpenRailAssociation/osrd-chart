@@ -44,6 +44,9 @@ spec:
             httpGet:
               path: /health
               port: http
+            initialDelaySeconds: {{ .Values.editoast.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.editoast.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.editoast.livenessProbe.timeoutSeconds }}
           readinessProbe:
             httpGet:
               path: /health
