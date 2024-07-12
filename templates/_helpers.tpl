@@ -31,11 +31,11 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
-Common labels Core
+Common labels Osrdyne
 */}}
-{{- define "osrd.labels.core" -}}
+{{- define "osrd.labels.osrdyne" -}}
 helm.sh/chart: {{ include "osrd.chart" . }}
-{{ include "osrd.selectorLabels.core" . }}
+{{ include "osrd.selectorLabels.osrdyne" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -43,11 +43,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels Core
+Selector labels Osrdyne
 */}}
-{{- define "osrd.selectorLabels.core" -}}
-app.kubernetes.io/name: {{ include "osrd.name" . }}-core
-app.kubernetes.io/instance: {{ .Release.Name }}-core
+{{- define "osrd.selectorLabels.osrdyne" -}}
+app.kubernetes.io/name: {{ include "osrd.name" . }}-osrdyne
+app.kubernetes.io/instance: {{ .Release.Name }}-osrdyne
 {{- end }}
 
 {{/*
