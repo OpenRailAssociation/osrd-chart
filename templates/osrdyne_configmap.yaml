@@ -1,0 +1,69 @@
+{{- if .Values.osrdyne.enabled -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "osrd.fullname" . }}-osrdyne-config
+data:
+  osrdyne.yml: |
+    amqp_uri: "{{ .Values.osrdyne.config.amqp_uri }}"
+    management_port: {{ .Values.osrdyne.config.management_port }}
+    {{- if .Values.osrdyne.config.management_host }}
+    management_host: "{{ .Values.osrdyne.config.management_host }}"
+    {{- end }}
+    {{- if .Values.osrdyne.config.pool_id }}
+    pool_id: "{{ .Values.osrdyne.config.pool_id }}"
+    {{- end }}
+    {{- if .Values.osrdyne.config.default_message_ttl }}
+    default_message_ttl: "{{ .Values.osrdyne.config.default_message_ttl }}"
+    {{- end }}
+    {{- if .Values.osrdyne.config.max_length }}
+    max_length: "{{ .Values.osrdyne.config.max_length }}"
+    {{- end }}
+    {{- if .Values.osrdyne.config.max_length_bytes }}
+    max_length_bytes: "{{ .Values.osrdyne.config.max_length_bytes }}"
+    {{- end }}
+    api_address: "0.0.0.0:80"
+    worker_driver:
+      type: "KubernetesDriver"
+      core_image: "{{ .Values.core.image }}"
+      start_command: ["sh", "-c", "exec java $JAVA_OPTS -ea -jar /app/osrd_core.jar worker"]
+      deployment_prefix: "{{ include "osrd.fullname" . }}"
+      namespace: "{{ .Release.Namespace }}"
+      editoast_url: "{{ .Values.editoast.internalUrl }}"
+      {{- with .Values.core.autoscaling }}
+      autoscaling:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      kube_deployment_options:
+        default_env:
+          {{- with .Values.core.env }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
+          - name: CORE_EDITOAST_URL
+            value: {{ .Values.editoast.internalUrl }}
+          - name: CORE_MONITOR_TYPE
+            value: "{{ .Values.core.config.telemetry }}"
+          - name: JAVA_TOOL_OPTIONS
+            value: {{ if eq .Values.core.config.telemetry "opentelemetry" -}}
+              "-javaagent:/app/opentelemetry-javaagent.jar"
+            {{- else if eq .Values.core.config.telemetry "datadog" -}}
+              "-javaagent:/app/dd-java-agent.jar"
+            {{- end -}}
+        {{- with .Values.core.resources }}
+        resources:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.core.nodeSelector }}
+        node_selector:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.core.affinity }}
+        affinity:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.core.tolerations }}
+        tolerations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+{{- end }}

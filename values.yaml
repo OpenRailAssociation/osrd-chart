@@ -3,12 +3,12 @@ fullnameOverride: ""
 
 imagePullSecrets: []
 
-core:
-  internalUrl: http://osrd-core.osrd.svc.cluster.local
+osrdyne:
   enabled: true
-  image: osrd/core
+  internalUrl: http://osrdyne.osrd.svc.cluster.local
+  enabled: true
+  image: ghcr.io/openrailassociation/osrd-edge/osrd-orsdyne:dev
   pullPolicy: IfNotPresent
-  replicaCount: 1
   service:
     type: ClusterIP
     port: 80
@@ -25,12 +25,32 @@ core:
   resources: {}
   env: []
   config:
+    amqp_uri: "amqp://osrd:password@rabbitmq:5672/%2f"
+    management_port: 15672
+    management_host: 
+    pool_id: "core"
+    default_message_ttl: 
+    max_length:
+    max_length_bytes:
+    api_address: "0.0.0.0:80"
+
+core:
+  image: ghcr.io/openrailassociation/osrd-edge/osrd-core:dev
+  pullPolicy: IfNotPresent
+  annotations: {}
+  labels: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  enn: []
+  config:
     telemetry: null
 
 editoast:
   internalUrl: http://osrd-editoast.osrd.svc.cluster.local
   enabled: true
-  image: osrd/editoast
+  image: ghcr.io/openrailassociation/osrd-edge/osrd-editoast:dev
   pullPolicy: IfNotPresent
   replicaCount: 1
   service:
@@ -55,7 +75,7 @@ editoast:
 tileServer:
   internalUrl: http://osrd-tile-server.osrd.svc.cluster.local
   enabled: false
-  image: osrd/editoast
+  image: ghcr.io/openrailassociation/osrd-edge/osrd-editoast:dev
   pullPolicy: IfNotPresent
   replicaCount: 2
   service:
@@ -77,7 +97,7 @@ tileServer:
 
 gateway:
   enabled: true
-  image: osrd/gateway
+  image: ghcr.io/openrailassociation/osrd-edge/osrd-gateway:dev-front
   pullPolicy: IfNotPresent
   replicaCount: 1
   service:

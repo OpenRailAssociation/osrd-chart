@@ -11,6 +11,5 @@ data:
     {{- with .Values.editoast.init.extend }}
     {{ . }}
     {{- end }}
-    export DATABASE_URL="postgres://${PSQL_USERNAME}:${PSQL_PASSWORD}@${PSQL_HOST}:${PSQL_PORT}/${PSQL_DATABASE}"
     diesel migration run
 {{- end }}
