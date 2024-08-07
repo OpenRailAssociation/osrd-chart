@@ -27,6 +27,10 @@ data:
     worker_driver:
       type: "KubernetesDriver"
       container_image: "{{ .Values.core.image }}"
+      {{- if .Values.core.imagePullSecrets }}
+      image_pull_secrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      {{- end }}
       start_command: ["sh", "-c", "exec java $JAVA_OPTS -ea -jar /app/osrd_core.jar worker"]
       deployment_prefix: "{{ include "osrd.fullname" . }}"
       namespace: "{{ .Release.Namespace }}"
