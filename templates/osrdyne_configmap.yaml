@@ -32,7 +32,7 @@ data:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
       start_command: ["sh", "-c", "exec java $JAVA_OPTS -ea -jar /app/osrd_core.jar worker"]
-      deployment_prefix: "{{ include "osrd.fullname" . }}-core"
+      deployment_prefix: "{{ include "osrd.fullname" . }}"
       namespace: "{{ .Release.Namespace }}"
       editoast_url: "{{ .Values.editoast.internalUrl }}"
       {{- with .Values.core.autoscaling }}
