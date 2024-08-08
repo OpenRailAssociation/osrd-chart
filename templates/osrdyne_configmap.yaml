@@ -27,7 +27,7 @@ data:
     worker_driver:
       type: "KubernetesDriver"
       container_image: "{{ .Values.core.image }}"
-      {{- if .Values.core.imagePullSecrets }}
+      {{- if .Values.imagePullSecrets }}
       image_pull_secrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       {{- end }}
