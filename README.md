@@ -28,3 +28,11 @@ helm install osrd oci://ghcr.io/openrailassociation/osrd-charts/osrd-dev --versi
 ## Configuration
 
 Check the `values.yaml` file.
+
+## Contributing
+
+To comply with the [DCO](http://developercertificate.org/), all commits must
+include a Signed-off-by line. You can find more information about this [here](https://osrd.fr/en/docs/guides/contribute/contribute-code/commit-conventions/#the-developer-certificate-of-origin)
+
+For more advice on how to contribute, follow that link:
+https://osrd.fr/en/docs/guides/contribute/contribute-code
