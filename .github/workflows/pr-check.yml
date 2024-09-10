@@ -1,10 +1,11 @@
-name: Lint and build the chart
+name: PR Checks
 
 on:
   pull_request:
 
 jobs:
-  check:
+  check_lint_and_build:
+    name: Lint and build the chart
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -28,3 +29,11 @@ jobs:
     - name: Package the Chart
       run: |
         helm package .
+
+  check_reuse_compliance:
+    name: Check REUSE Compliance
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v4
