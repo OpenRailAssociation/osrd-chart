@@ -5,5 +5,5 @@ metadata:
   name: {{ include "osrd.fullname" . }}-gateway-extra_help
 data:
   help.md: |
-    {{ .Values.gateway.extra_help }}
+    {{ .Values.gateway.extra_help | nindent 4 }}
 {{- end }}
