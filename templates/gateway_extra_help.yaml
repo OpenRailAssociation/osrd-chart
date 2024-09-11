@@ -1,4 +1,4 @@
-{{- if .Values.gateway.extra_help -}}
+{{- if .Values.gateway.extra_help }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
