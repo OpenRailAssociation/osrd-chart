@@ -1,9 +1,9 @@
-{{- if .Values.gateway.extra_help }}
+{{- if .Values.gateway.extrahelp }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ include "osrd.fullname" . }}-gateway-extrahelp
 data:
   help.md: |
-    {{ .Values.gateway.extra_help | nindent 4 }}
+    {{ .Values.gateway.extrahelp | nindent 4 }}
 {{- end }}
