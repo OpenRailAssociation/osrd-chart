@@ -75,7 +75,7 @@ spec:
         {{- if .Values.gateway.extra_help }}
         - name: extra_help
           configMap:
-            name: {{ include "osrd.fullname" . }}-gateway-extra_help
+            name: {{ include "osrd.fullname" . }}-gateway-extrahelp
         {{- end }}
         {{- with .Values.gateway.volumes }}
         {{- toYaml . | nindent 8 }}

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "osrd.fullname" . }}-gateway-extra_help
+  name: {{ include "osrd.fullname" . }}-gateway-extrahelp
 data:
   help.md: |
     {{ .Values.gateway.extra_help | nindent 4 }}
