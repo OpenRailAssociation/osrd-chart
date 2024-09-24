@@ -61,6 +61,8 @@ spec:
               value: {{ .Values.core.internalUrl }}
             - name: OSRD_MQ_URL
               value: {{ .Values.osrdyne.config.amqp_uri }}
+            - name: OSRDYNE_API_URL
+              value: {{ .Values.osrdyne.internalUrl }}
           resources:
             {{- toYaml .Values.editoast.resources | nindent 12 }}
       {{- with .Values.editoast.nodeSelector }}
