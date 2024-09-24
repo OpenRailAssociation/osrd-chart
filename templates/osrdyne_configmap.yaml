@@ -23,7 +23,7 @@ data:
     {{- if .Values.osrdyne.config.max_length_bytes }}
     max_length_bytes: "{{ .Values.osrdyne.config.max_length_bytes }}"
     {{- end }}
-    api_address: "0.0.0.0:80"
+    api_address: "0.0.0.0:{{ .Values.osrdyne.service.targetPort }}"
     worker_driver:
       type: "KubernetesDriver"
       container_image: "{{ .Values.core.image }}"
