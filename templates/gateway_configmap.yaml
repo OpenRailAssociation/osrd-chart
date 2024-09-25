@@ -35,6 +35,11 @@ data:
     upstream = "{{ .Values.editoast.internalUrl }}"
     require_auth = true
 
+    [[targets]]
+    prefix = "/images"
+    upstream = "{{ .Values.images.internalUrl }}"
+    require_auth = true
+
     {{- if $config.auth }}
     [auth]
     {{- if $config.auth.default_provider }}
