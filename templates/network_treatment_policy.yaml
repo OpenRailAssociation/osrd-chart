@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-treatment
+spec:
+  podSelector:
+    matchLabels:
+      sncf.reseau.security/zone: traitement
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              sncf.reseau.security/zone: traitement
+        - podSelector:
+            matchLabels:
+              sncf.reseau.security/zone: presentation
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              sncf.reseau.security/zone: presentation
+        - podSelector:
+            matchLabels:
+              sncf.reseau.security/zone: traitement

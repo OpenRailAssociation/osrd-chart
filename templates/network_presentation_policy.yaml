@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-gateway-presentation
+spec:
+  podSelector:
+    matchLabels:
+      app: gateway
+      sncf.reseau.security/zone: presentation
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              sncf.reseau.security/zone: presentation
+        - podSelector:
+            matchLabels:
+              sncf.reseau.security/zone: traitement
+  egress:
+    - to:
+        - podSelector:
+            matchLabels:
+              sncf.reseau.security/zone: traitement
