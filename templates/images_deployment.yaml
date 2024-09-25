@@ -27,4 +27,38 @@ spec:
         {{- with .Values.images.labels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+    spec: 
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "osrd.name" . }}-images
+          image: "{{ .Values.images.image }}"
+          imagePullPolicy: {{ .Values.images.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.images.service.port }}
+              protocol: TCP
+          env:
+            {{- with .Values.images.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            - name: IMAGES_PORT
+              value: "{{ .Values.images.service.targetPort }}"
+          resources:
+            {{- toYaml .Values.images.resources | nindent 12 }}
+      {{- with .Values.images.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.images.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.images.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
 {{- end }}
