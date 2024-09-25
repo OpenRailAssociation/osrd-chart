@@ -136,3 +136,20 @@ gateway:
       - "10.0.0.0/8"
       - "172.16.0.0/12"
       - "192.168.0.0/16"
+
+images:
+  image: ghcr.io/openrailassociation/osrd-stable/osrd-images:v1.0.0
+  pullPolicy: IfNotPresent
+  replicaCount: 1
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  annotations: {}
+  labels: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources: {}
+  enn: []
