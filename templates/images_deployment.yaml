@@ -44,7 +44,7 @@ spec:
             {{- with .Values.images.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            - name: IMAGES_PORT
+            - name: NGINX_PORT
               value: "{{ .Values.images.service.targetPort }}"
           resources:
             {{- toYaml .Values.images.resources | nindent 12 }}
