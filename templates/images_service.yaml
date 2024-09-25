@@ -1,0 +1,19 @@
+{{- if .Values.images.enabled -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "osrd.fullname" . }}-images
+  labels:
+    {{- include "osrd.labels.images" . | nindent 4 }}
+spec:
+  type: {{ .Values.images.service.type }}
+  ports:
+    - port: {{ .Values.images.service.port }}
+      targetPort: {{ .Values.images.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "osrd.selectorLabels.images" . | nindent 4 }}
+
+{{- end }}

@@ -109,3 +109,24 @@ Selector labels Gateway
 app.kubernetes.io/name: {{ include "osrd.name" . }}-gateway
 app.kubernetes.io/instance: {{ .Release.Name }}-gateway
 {{- end }}
+
+
+{{/*
+Common labels Images
+*/}}
+{{- define "osrd.labels.images" -}}
+helm.sh/chart: {{ include "osrd.chart" . }}
+{{ include "osrd.selectorLabels.images" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels Images
+*/}}
+{{- define "osrd.selectorLabels.images" -}}
+app.kubernetes.io/name: {{ include "osrd.name" . }}-images
+app.kubernetes.io/instance: {{ .Release.Name }}-images
+{{- end }}
