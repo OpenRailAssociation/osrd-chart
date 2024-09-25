@@ -138,6 +138,7 @@ gateway:
       - "192.168.0.0/16"
 
 images:
+  internalUrl: http://osrd-images.osrd.svc.cluster.local
   image: ghcr.io/openrailassociation/osrd-stable/osrd-images:v1.0.0
   pullPolicy: IfNotPresent
   replicaCount: 1
