@@ -70,4 +70,12 @@ data:
         tolerations:
           {{- toYaml . | nindent 10 }}
         {{- end }}
+        {{- with .Values.core.labels }}
+        labels:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
+        {{- with .Values.core.annotations }}
+        annotations:
+          {{- toYaml . | nindent 10 }}
+        {{- end }}
 {{- end }}
