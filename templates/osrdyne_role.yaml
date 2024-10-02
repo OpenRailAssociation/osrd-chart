@@ -4,9 +4,15 @@ metadata:
   name: {{ include "osrd.fullname" . }}-osrdyne-role
   namespace: {{ .Release.Namespace }}
 rules:
+# Manage deployments
 - apiGroups: ["apps"]
   resources: ["deployments"]
   verbs: ["get", "create", "update", "delete", "list"]
+# Manage autoscaling
 - apiGroups: ["autoscaling"]
   resources: ["horizontalpodautoscalers"]
+  verbs: ["get", "create", "update", "delete", "list"]
+# Manage keda scaled objects
+- apiGroups: ["keda.sh"]
+  resources: ["scaledobjects"]
   verbs: ["get", "create", "update", "delete", "list"]
