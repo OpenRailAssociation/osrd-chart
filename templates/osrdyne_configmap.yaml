@@ -37,7 +37,7 @@ data:
       editoast_url: "{{ .Values.editoast.internalUrl }}"
       {{- with .Values.core.autoscaling }}
       autoscaling:
-        {{- toYaml . | nindent 6 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
       kube_deployment_options:
         default_env:
