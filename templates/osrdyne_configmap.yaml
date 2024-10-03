@@ -18,10 +18,10 @@ data:
     default_message_ttl: "{{ .Values.osrdyne.config.default_message_ttl }}"
     {{- end }}
     {{- if .Values.osrdyne.config.max_length }}
-    max_length: "{{ .Values.osrdyne.config.max_length }}"
+    max_length: {{ .Values.osrdyne.config.max_length }}
     {{- end }}
     {{- if .Values.osrdyne.config.max_length_bytes }}
-    max_length_bytes: "{{ .Values.osrdyne.config.max_length_bytes }}"
+    max_length_bytes: {{ .Values.osrdyne.config.max_length_bytes }}
     {{- end }}
     api_address: "0.0.0.0:{{ .Values.osrdyne.service.targetPort }}"
     worker_driver:
