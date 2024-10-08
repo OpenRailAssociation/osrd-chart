@@ -1,4 +1,4 @@
-{{- if .Values.editoast.init.enabled -}}
+{{- if .Values.services.editoast.init.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,7 +8,7 @@ data:
     #!/bin/sh
     set -e
     
-    {{- with .Values.editoast.init.extend }}
+    {{- with .Values.services.editoast.init.extend }}
     {{ . }}
     {{- end }}
     diesel migration run

@@ -1,156 +1,169 @@
+# Helm overrides
 nameOverride: ""
 fullnameOverride: ""
 
+# Common parameters. Will be applied everywhere can be
+# overriden within the "services" section.
+annotations: {}
+labels: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Endpoints used by the application.
+# The variables can be either a string or directly an object that would be used
+# in the env variable that uses it (merged directly).
+endpoints:
+  public: https://my-osrd-instance.org
+  amqp: "amqp://osrd:password@rabbitmq:5672/%2f"
+  amqpManagement: "http://osrd:password@rabbitmq:15672"
+  postgresql: "postgres://osrd:password@postgres:5432/osrd"
+  redis: redis://username:pwd@redis:6379/0
+
+# Container images related settings
 imagePullSecrets: []
-
-osrdyne:
-  enabled: true
-  internalUrl: http://osrdyne.osrd.svc.cluster.local
-  enabled: true
-  image: ghcr.io/openrailassociation/osrd-edge/osrd-orsdyne:dev
-  pullPolicy: IfNotPresent
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 80
-  livenessProbe:
-    initialDelaySeconds: 5
-    periodSeconds: 60
-    timeoutSeconds: 20
-  annotations: {}
-  labels: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  resources: {}
-  env: []
-  config:
-    amqp_uri: "amqp://osrd:password@rabbitmq:5672/%2f"
-    management_port: 15672
-    management_host: 
-    pool_id: "core"
-    default_message_ttl: 
-    max_length:
-    max_length_bytes:
-    api_address: "0.0.0.0:80"
-
-core:
-  image: ghcr.io/openrailassociation/osrd-edge/osrd-core:dev
-  pullPolicy: IfNotPresent
-  annotations: {}
-  labels: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  resources: {}
-  enn: []
-  config:
-    telemetry: null
-
-editoast:
-  internalUrl: http://osrd-editoast.osrd.svc.cluster.local
-  enabled: true
-  image: ghcr.io/openrailassociation/osrd-edge/osrd-editoast:dev
-  pullPolicy: IfNotPresent
-  replicaCount: 1
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 80
-  livenessProbe:
-    initialDelaySeconds: 0
-    periodSeconds: 10
-    timeoutSeconds: 1
-  annotations: {}
-  init:
-    enabled: true
-    extend: ""
-  labels: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  resources: {}
-  env: []
-
-tileServer:
-  internalUrl: http://osrd-tile-server.osrd.svc.cluster.local
-  enabled: false
-  image: ghcr.io/openrailassociation/osrd-edge/osrd-editoast:dev
-  pullPolicy: IfNotPresent
-  replicaCount: 2
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 80
-  hpa:
-    enabled: false
-    minReplicas: 1
-    maxReplicas: 10
-    targetCPUUtilizationPercentage: 80
-  annotations: {}
-  labels: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  resources: {}
-  env: []
-
-gateway:
-  enabled: true
-  image: ghcr.io/openrailassociation/osrd-edge/osrd-gateway:dev-front
-  pullPolicy: IfNotPresent
-  replicaCount: 1
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 80
-  ingress:
-    enabled: false
-    className: ""
-    domains:
-      - osrd.local
-    secretName: osrd-gateway-tls
-    annotations: {}
-    tls: []
-  annotations: {}
-  labels: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  resources: {}
-  env: []
-  volumes: []
-  volumeMounts: []
-  config:
-    auth:
-      providers:
-        - type: "Mocked"
-          provider_id: "mocked"
-          username: "osrd-admin"
-          require_login: false
-    tracing:
-      enabled: false
-      type: ""
-      config: {}
-    trusted_proxies:
-      - "10.0.0.0/8"
-      - "172.16.0.0/12"
-      - "192.168.0.0/16"
-
+pullPolicy: IfNotPresent
 images:
-  internalUrl: http://osrd-images.osrd.svc.cluster.local
-  image: ghcr.io/openrailassociation/osrd-stable/osrd-images:v1.0.0
-  pullPolicy: IfNotPresent
-  replicaCount: 1
-  enabled: true
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 80
-  annotations: {}
-  labels: {}
-  nodeSelector: {}
-  tolerations: []
-  affinity: {}
-  resources: {}
-  env: []
+  editoast: ghcr.io/openrailassociation/osrd-edge/osrd-editoast:dev
+  gateway: ghcr.io/openrailassociation/osrd-edge/osrd-gateway:dev-front
+  core: ghcr.io/openrailassociation/osrd-edge/osrd-core:dev
+  osrdyne: ghcr.io/openrailassociation/osrd-edge/osrd-osrdyne:dev
+  images: ghcr.io/openrailassociation/osrd-edge/osrd-images:v1.0.2
+
+# Services direct settings and overides
+services:
+  osrdyne:
+    enabled: true
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 80
+    livenessProbe:
+      initialDelaySeconds: 5
+      periodSeconds: 60
+      timeoutSeconds: 20
+    config:
+      pool_id: "core"
+      api_address: "0.0.0.0:80"
+      default_message_ttl:
+      max_length:
+      max_length_bytes: 
+    annotations: {}
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []
+
+  images:
+    replicaCount: 1
+    enabled: true
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 80
+    annotations: {}
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []
+
+  core:
+    annotations: {}
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []
+    config:
+      telemetry: null
+
+  tileServer:
+    enabled: true
+    replicaCount: 2
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 80
+    livenessProbe:
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 1
+    hpa:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 10
+      targetCPUUtilizationPercentage: 80
+    annotations: {}
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []
+
+  gateway:
+    enabled: true
+    replicaCount: 1
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 80
+    ingress:
+      enabled: false
+      className: ""
+      domains:
+        - osrd.local
+      secretName: osrd-gateway-tls
+      annotations: {}
+      tls: []
+    config:
+      auth:
+        providers:
+          - type: "Mocked"
+            provider_id: "mocked"
+            username: "osrd-admin"
+            require_login: false
+      tracing:
+        enabled: false
+        type: ""
+        config: {}
+      trusted_proxies:
+        - "10.0.0.0/8"
+        - "172.16.0.0/12"
+        - "192.168.0.0/16"
+    annotations: {}
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []
+    volumes: []
+    volumeMounts: []
+
+  editoast:
+    enabled: true
+    replicaCount: 1
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 80
+    livenessProbe:
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 1
+    annotations: {}
+    init:
+      enabled: true
+      extend: ""
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []

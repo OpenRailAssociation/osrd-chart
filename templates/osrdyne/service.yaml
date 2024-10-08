@@ -1,4 +1,4 @@
-{{- if .Values.osrdyne.enabled -}}
+{{- if .Values.services.osrdyne.enabled -}}
 apiVersion: v1
 kind: Service
 metadata:
@@ -6,10 +6,10 @@ metadata:
   labels:
     {{- include "osrd.labels.osrdyne" . | nindent 4 }}
 spec:
-  type: {{ .Values.osrdyne.service.type }}
+  type: {{ .Values.services.osrdyne.service.type }}
   ports:
-    - port: {{ .Values.osrdyne.service.port }}
-      targetPort: {{ .Values.osrdyne.service.targetPort }}
+    - port: {{ .Values.services.osrdyne.service.port }}
+      targetPort: {{ .Values.services.osrdyne.service.targetPort }}
       protocol: TCP
       name: http
   selector:
