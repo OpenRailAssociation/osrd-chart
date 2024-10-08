@@ -1,4 +1,4 @@
-{{- if .Values.tileServer.enabled -}}
+{{- if .Values.services.tileServer.enabled -}}
 
 apiVersion: v1
 kind: Service
@@ -7,10 +7,10 @@ metadata:
   labels:
     {{- include "osrd.labels.tileServer" . | nindent 4 }}
 spec:
-  type: {{ .Values.tileServer.service.type }}
+  type: {{ .Values.services.tileServer.service.type }}
   ports:
-    - port: {{ .Values.tileServer.service.port }}
-      targetPort: {{ .Values.tileServer.service.targetPort }}
+    - port: {{ .Values.services.tileServer.service.port }}
+      targetPort: {{ .Values.services.tileServer.service.targetPort }}
       protocol: TCP
       name: http
   selector:

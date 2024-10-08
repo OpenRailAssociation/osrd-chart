@@ -1,4 +1,4 @@
-{{- if .Values.gateway.enabled -}}
+{{- if .Values.services.gateway.enabled -}}
 
 apiVersion: v1
 kind: ConfigMap
@@ -6,9 +6,9 @@ metadata:
   name: {{ include "osrd.fullname" . }}-gateway-config
 data:
   gateway.toml: |
-    {{- $config := .Values.gateway.config }}
+    {{- $config := .Values.services.gateway.config }}
     listen_addr = "0.0.0.0"
-    port = {{ .Values.gateway.service.targetPort }}
+    port = {{ .Values.services.gateway.service.targetPort }}
     trusted_proxies = [{{ range $index, $proxy := $config.trusted_proxies }}{{ if $index }}, {{ end }}"{{ $proxy }}"{{ end }}]
 
     [static_files]
@@ -23,21 +23,21 @@ data:
     {{- end }}
     {{- end }}
 
-    {{- if .Values.tileServer.enabled }}
+    {{- if .Values.services.tileServer.enabled }}
     [[targets]]
     prefix = "/api/layers"
-    upstream = "{{ .Values.tileServer.internalUrl }}/layers"
+    upstream = "http://{{ include "osrd.fullname" . }}-tile-server/layers"
     require_auth = true
     {{- end }}
 
     [[targets]]
     prefix = "/api"
-    upstream = "{{ .Values.editoast.internalUrl }}"
+    upstream = "http://{{ include "osrd.fullname" . }}-editoast"
     require_auth = true
 
     [[targets]]
     prefix = "/images"
-    upstream = "{{ .Values.images.internalUrl }}"
+    upstream = "http://{{ include "osrd.fullname" . }}-images"
     require_auth = true
 
     {{- if $config.auth }}

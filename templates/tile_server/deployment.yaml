@@ -1,0 +1,115 @@
+{{- if .Values.services.tileServer.enabled -}}
+
+{{- $mergedAnnotations := merge (.Values.annotations | default dict) (.Values.services.tileServer.annotations | default dict) }}
+{{- $generatedLabels := include "osrd.labels.tileServer" . | fromYaml }}
+{{- $mergedLabels := merge (.Values.labels | default dict) (.Values.services.tileServer.labels | default dict) $generatedLabels }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "osrd.fullname" . }}-tile-server
+  labels:
+    {{- toYaml $mergedLabels | nindent 4 }}
+  annotations:
+    {{- toYaml $mergedAnnotations | nindent 4 }}
+spec:
+  replicas: {{ .Values.services.tileServer.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "osrd.selectorLabels.tileServer" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- toYaml $mergedLabels | nindent 8 }}
+      annotations:
+        {{- toYaml $mergedAnnotations | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ include "osrd.name" . }}-tile-server
+          image: "{{ .Values.images.editoast }}"
+          imagePullPolicy: {{ .Values.pullPolicy }}
+
+          ports:
+            - name: http
+              containerPort: {{ .Values.services.tileServer.service.port }}
+              protocol: TCP
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: {{ .Values.services.tileServer.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.services.tileServer.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.services.tileServer.livenessProbe.timeoutSeconds }}
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+
+          env:
+            - name: EDITOAST_PORT
+              value: "{{ .Values.services.tileServer.service.targetPort }}"
+
+            - name: OSRDYNE_API_URL
+              value: http://{{ include "osrd.fullname" . }}-osrdyne
+
+            - name: ROOT_URL
+              value: "{{ .Values.endpoints.public }}/api"
+
+            - name: OSRD_MQ_URL
+              {{- $amqp := .Values.endpoints.amqp }}
+              {{- if eq (typeOf $amqp) "map" }}
+              valueFrom:
+                {{- toYaml $amqp.valueFrom | nindent 6 }}
+              {{- else }}
+              value: "{{ $amqp }}"
+              {{- end }}
+
+            - name: DATABASE_URL
+              {{- $postgresql := .Values.endpoints.postgresql }}
+              {{- if eq (typeOf $postgresql) "map" }}
+              valueFrom:
+                {{- toYaml $postgresql.valueFrom | nindent 6 }}
+              {{- else }}
+              value: "{{ $postgresql }}"
+              {{- end }}
+
+            - name: REDIS_URL
+              {{- $redis := .Values.endpoints.redis }}
+              {{- if eq (typeOf $redis) "map" }}
+              valueFrom:
+                {{- toYaml $redis.valueFrom | nindent 6 }}
+              {{- else }}
+              value: "{{ $redis }}"
+              {{- end }}
+
+            {{- with .Values.services.editoast.env | default dict }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+
+            {{- with .Values.services.tileServer.env | default dict }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            
+          resources:
+            {{- toYaml .Values.services.tileServer.resources | nindent 12 }}
+
+      nodeSelector:
+        {{- toYaml (merge (.Values.nodeSelector | default dict) (.Values.services.gateway.nodeSelector | default dict)) | nindent 8 }}
+
+      affinity:
+        {{- toYaml (merge (.Values.affinity | default dict) (.Values.services.gateway.affinity | default dict)) | nindent 8 }}
+
+      tolerations:
+        {{- with .Values.tolerations | default dict }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.services.tileServer.tolerations | default dict }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+{{- end }}

@@ -1,0 +1,16 @@
+{{- if .Values.services.tileServer.hpa.enabled -}}
+
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "osrd.fullname" . }}-tile-server-hpa
+spec:
+  maxReplicas: {{ .Values.services.tileServer.hpa.maxReplicas }}
+  minReplicas: {{ .Values.services.tileServer.hpa.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "osrd.fullname" . }}-tile-server
+  targetCPUUtilizationPercentage: {{ .Values.services.tileServer.hpa.targetCPUUtilizationPercentage }}
+
+{{- end }}

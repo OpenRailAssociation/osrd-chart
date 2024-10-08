@@ -1,11 +1,11 @@
-{{- if .Values.gateway.ingress.enabled -}}
+{{- if .Values.services.gateway.ingress.enabled -}}
 {{- $fullName := include "osrd.fullname" . -}}
-{{- $svcPort := .Values.gateway.service.port -}}
+{{- $svcPort := .Values.services.gateway.service.port -}}
 {{- $k8sVersion := .Capabilities.KubeVersion.GitVersion -}}
 
-{{- if and .Values.gateway.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
-  {{- if not (hasKey .Values.gateway.ingress.annotations "kubernetes.io/ingress.class") }}
-  {{- $_ := set .Values.gateway.ingress.annotations "kubernetes.io/ingress.class" .Values.gateway.ingress.className}}
+{{- if and .Values.services.gateway.ingress.className (not (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion)) }}
+  {{- if not (hasKey .Values.services.gateway.ingress.annotations "kubernetes.io/ingress.class") }}
+  {{- $_ := set .Values.services.gateway.ingress.annotations "kubernetes.io/ingress.class" .Values.services.gateway.ingress.className}}
   {{- end }}
 {{- end }}
 
@@ -22,26 +22,26 @@ metadata:
   name: {{ $fullName }}
   labels:
     {{- include "osrd.labels.gateway" . | nindent 4 }}
-  {{- with .Values.gateway.ingress.annotations }}
+  {{- with .Values.services.gateway.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  {{- if and .Values.gateway.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
-  ingressClassName: {{ .Values.gateway.ingress.className }}
+  {{- if and .Values.services.gateway.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.services.gateway.ingress.className }}
   {{- end }}
 
-  {{- if .Values.gateway.ingress.tls }}
+  {{- if .Values.services.gateway.ingress.tls }}
   tls:
   - hosts:
-      {{- with .Values.gateway.ingress.domains }}
+      {{- with .Values.services.gateway.ingress.domains }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
-    secretName: {{ .Values.gateway.ingress.secretName }}
+    secretName: {{ .Values.services.gateway.ingress.secretName }}
   {{- end }}
 
   rules:
-    {{- range .Values.gateway.ingress.domains }}
+    {{- range .Values.services.gateway.ingress.domains }}
     - host: {{ . }}
       http:
         paths:

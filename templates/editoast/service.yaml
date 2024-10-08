@@ -1,4 +1,4 @@
-{{- if .Values.editoast.enabled -}}
+{{- if .Values.services.editoast.enabled -}}
 
 apiVersion: v1
 kind: Service
@@ -7,10 +7,10 @@ metadata:
   labels:
     {{- include "osrd.labels.editoast" . | nindent 4 }}
 spec:
-  type: {{ .Values.editoast.service.type }}
+  type: {{ .Values.services.editoast.service.type }}
   ports:
-    - port: {{ .Values.editoast.service.port }}
-      targetPort: {{ .Values.editoast.service.targetPort }}
+    - port: {{ .Values.services.editoast.service.port }}
+      targetPort: {{ .Values.services.editoast.service.targetPort }}
       protocol: TCP
       name: http
   selector:
