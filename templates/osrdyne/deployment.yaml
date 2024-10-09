@@ -73,6 +73,15 @@ spec:
               value: "{{ $amqpManagement }}"
               {{- end }}
 
+            - name: OSRDYNE__WORKER_DRIVER__AUTOSCALING__AMQP_HOST
+              {{- $amqp := .Values.endpoints.amqp }}
+              {{- if eq (typeOf $amqp) "map" }}
+              valueFrom:
+                {{- toYaml $amqp.valueFrom | nindent 6 }}
+              {{- else }}
+              value: "{{ $amqp }}"
+              {{- end }}
+
             - name: RUST_LOG
               value: info
               
