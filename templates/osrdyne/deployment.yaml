@@ -72,17 +72,6 @@ spec:
               {{- else }}
               value: "{{ $amqpManagement }}"
               {{- end }}
-       
-            {{- if (and .Values.services.core.autoscaling (eq .Values.services.core.autoscaling.type "Keda")) }}
-            - name: OSRDYNE__WORKER_DRIVER__AUTOSCALING__AMQP_HOST
-              {{- $amqp := .Values.endpoints.amqp }}
-              {{- if eq (typeOf $amqp) "map" }}
-              valueFrom:
-                {{- toYaml $amqp.valueFrom | nindent 6 }}
-              {{- else }}
-              value: "{{ $amqp }}"
-              {{- end }}
-            {{- end }}
 
             - name: RUST_LOG
               value: info
