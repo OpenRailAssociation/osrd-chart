@@ -34,6 +34,7 @@ data:
     prefix = "/api"
     upstream = "http://{{ include "osrd.fullname" . }}-editoast"
     require_auth = true
+    blocked_headers = ["x-osrd-core"]
 
     [[targets]]
     prefix = "/images"
