@@ -73,7 +73,7 @@ spec:
               value: "{{ $amqpManagement }}"
               {{- end }}
        
-            {{- if eq .Values.services.core.autoscaling.type "Keda" }}
+            {{- if (and .Values.services.core.autoscaling (eq .Values.services.core.autoscaling.type "Keda")) }}
             - name: OSRDYNE__WORKER_DRIVER__AUTOSCALING__AMQP_HOST
               {{- $amqp := .Values.endpoints.amqp }}
               {{- if eq (typeOf $amqp) "map" }}
