@@ -35,6 +35,11 @@ data:
       deployment_prefix: "{{ include "osrd.fullname" . }}"
       namespace: "{{ .Release.Namespace }}"
 
+      {{- with .Values.services.core.autoscaling }}
+      autoscaling:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+
       kube_deployment_options:
         default_env:
           {{- with .Values.services.core.env }}

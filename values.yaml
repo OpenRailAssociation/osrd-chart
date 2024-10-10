@@ -81,6 +81,8 @@ services:
     env: []
     config:
       telemetry: null
+    autoscaling:
+      type: NoScaling
 
   tileServer:
     enabled: true
