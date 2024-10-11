@@ -39,9 +39,11 @@ spec:
               protocol: TCP
 
           livenessProbe:
-            httpGet:
-              path: /health
-              port: http
+            exec:
+              command:
+                - /bin/sh
+                - "-c"
+                - 'ps ax | grep -q "editoast" && /usr/local/bin/editoast healthcheck'
             initialDelaySeconds: {{ .Values.services.editoast.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.services.editoast.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.services.editoast.livenessProbe.timeoutSeconds }}
