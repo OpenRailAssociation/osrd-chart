@@ -9,7 +9,7 @@ data:
     set -e
     
     {{- with .Values.services.editoast.init.extend }}
-    {{ . }}
+    {{ . | nindent 4 }}
     {{- end }}
     diesel migration run
 {{- end }}
