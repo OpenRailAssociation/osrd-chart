@@ -11,7 +11,7 @@ This repository contains Helm charts for deploying OSRD, which consists of three
 - Kubernetes cluster
 - Helm installed
 
-## Deploying the Application
+## Deploying the application
 
 After adding the repository, you can deploy the application using the following command:
 
