@@ -46,14 +46,21 @@ spec:
             {{- with (.Values.services.osrdyne.volumeMounts | default list) }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+
+          {{- if not .Values.services.osrdyne.livenessProbe.disabled }}
           livenessProbe:
             httpGet:
               path: /health
               port: http
+          {{- end }}
+
+          {{- if not .Values.services.osrdyne.readinessProbe.disabled }}
           readinessProbe:
             httpGet:
               path: /health
               port: http
+          {{- end }}
+
           env:
             - name: OSRDYNE__AMQP_URI
               {{- $amqp := .Values.endpoints.amqp }}

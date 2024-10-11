@@ -39,9 +39,12 @@ services:
       port: 80
       targetPort: 80
     livenessProbe:
+      disabled: false
       initialDelaySeconds: 5
       periodSeconds: 60
       timeoutSeconds: 20
+    readinessProbe:
+      disabled: false
     config:
       pool_id: "core"
       api_address: "0.0.0.0:80"
@@ -92,9 +95,12 @@ services:
       port: 80
       targetPort: 80
     livenessProbe:
+      disabled: false
       initialDelaySeconds: 0
       periodSeconds: 10
       timeoutSeconds: 1
+    readinessProbe:
+      disabled: false
     hpa:
       enabled: false
       minReplicas: 1
@@ -138,6 +144,10 @@ services:
         - "10.0.0.0/8"
         - "172.16.0.0/12"
         - "192.168.0.0/16"
+    livenessProbe:
+      disabled: false
+    readinessProbe:
+      disabled: false
     annotations: {}
     labels: {}
     nodeSelector: {}
@@ -156,9 +166,12 @@ services:
       port: 80
       targetPort: 80
     livenessProbe:
+      disabled: false
       initialDelaySeconds: 0
       periodSeconds: 10
       timeoutSeconds: 1
+    readinessProbe:
+      disabled: false
     annotations: {}
     init:
       enabled: true

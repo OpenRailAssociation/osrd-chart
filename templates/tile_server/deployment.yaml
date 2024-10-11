@@ -38,6 +38,7 @@ spec:
               containerPort: {{ .Values.services.tileServer.service.port }}
               protocol: TCP
 
+          {{- if not .Values.services.tileServer.livenessProbe.disabled }}
           livenessProbe:
             httpGet:
               path: /health
@@ -45,11 +46,14 @@ spec:
             initialDelaySeconds: {{ .Values.services.tileServer.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.services.tileServer.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.services.tileServer.livenessProbe.timeoutSeconds }}
+          {{- end }}
 
+          {{- if not .Values.services.tileServer.readinessProbe.disabled }}
           readinessProbe:
             httpGet:
               path: /health
               port: http
+          {{- end }}
 
           env:
             - name: EDITOAST_PORT

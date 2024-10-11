@@ -38,6 +38,7 @@ spec:
               containerPort: {{ .Values.services.editoast.service.port }}
               protocol: TCP
 
+          {{- if not .Values.services.editoast.livenessProbe.disabled }}
           livenessProbe:
             exec:
               command:
@@ -47,11 +48,14 @@ spec:
             initialDelaySeconds: {{ .Values.services.editoast.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.services.editoast.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.services.editoast.livenessProbe.timeoutSeconds }}
+          {{- end }}
 
+          {{- if not .Values.services.editoast.readinessProbe.disabled }}
           readinessProbe:
             httpGet:
               path: /health
               port: http
+          {{- end }}
 
           env:
             - name: EDITOAST_PORT

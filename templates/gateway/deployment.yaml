@@ -50,14 +50,21 @@ spec:
             {{- with (.Values.services.gateway.volumeMounts | default list) }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
+          
+          {{- if not .Values.services.gateway.livenessProbe.disabled }}
           livenessProbe:
             httpGet:
               path: /health
               port: http
+          {{- end }}
+
+          {{- if not .Values.services.gateway.readinessProbe.disabled }}
           readinessProbe:
             httpGet:
               path: /health
               port: http
+          {{- end }}
+
           env:
             {{- with .Values.services.gateway.env }}
             {{- toYaml . | nindent 12 }}
