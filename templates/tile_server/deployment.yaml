@@ -20,6 +20,7 @@ spec:
   template:
     metadata:
       labels:
+        rollme: {{ randAlphaNum 5 | quote }}
         {{- toYaml $mergedLabels | nindent 8 }}
       annotations:
         {{- toYaml $mergedAnnotations | nindent 8 }}
