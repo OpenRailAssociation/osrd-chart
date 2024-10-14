@@ -51,7 +51,7 @@ spec:
               value: "{{ $postgresql }}"
               {{- end }}
 
-            - name: REDIS_URL
+            - name: VALKEY_URL
               {{- $redis := .Values.endpoints.redis }}
               {{- if eq (typeOf $redis) "map" }}
               valueFrom:
