@@ -1,26 +1,25 @@
-{{- if .Values.services.tileServer.enabled -}}
+{{- if .Values.services.statefulEditoast.enabled -}}
 
-{{- $mergedAnnotations := merge (.Values.annotations | default dict) (.Values.services.tileServer.annotations | default dict) }}
-{{- $generatedLabels := include "osrd.labels.tileServer" . | fromYaml }}
-{{- $mergedLabels := merge (.Values.labels | default dict) (.Values.services.tileServer.labels | default dict) $generatedLabels }}
+{{- $mergedAnnotations := merge (.Values.annotations | default dict) (.Values.services.statefulEditoast.annotations | default dict) }}
+{{- $generatedLabels := include "osrd.labels.statefulEditoast" . | fromYaml }}
+{{- $mergedLabels := merge (.Values.labels | default dict) (.Values.services.statefulEditoast.labels | default dict) $generatedLabels }}
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "osrd.fullname" . }}-tile-server
+  name: {{ include "osrd.fullname" . }}-stateful-editoast
   labels:
     {{- toYaml $mergedLabels | nindent 4 }}
   annotations:
     {{- toYaml $mergedAnnotations | nindent 4 }}
 spec:
-  replicas: {{ .Values.services.tileServer.replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "osrd.selectorLabels.tileServer" . | nindent 6 }}
+      {{- include "osrd.selectorLabels.statefulEditoast" . | nindent 6 }}
   template:
     metadata:
       labels:
-        rollme: {{ randAlphaNum 5 | quote }}
         {{- toYaml $mergedLabels | nindent 8 }}
       annotations:
         {{- toYaml $mergedAnnotations | nindent 8 }}
@@ -30,35 +29,31 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
-        - name: {{ include "osrd.name" . }}-tile-server
+        - name: {{ include "osrd.name" . }}-stateful-editoast
           image: "{{ .Values.images.editoast }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
 
           ports:
             - name: http
-              containerPort: {{ .Values.services.tileServer.service.port }}
+              containerPort: {{ .Values.services.statefulEditoast.service.port }}
               protocol: TCP
 
-          {{- if not .Values.services.tileServer.livenessProbe.disabled }}
           livenessProbe:
             httpGet:
               path: /health
               port: http
-            initialDelaySeconds: {{ .Values.services.tileServer.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.services.tileServer.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.services.tileServer.livenessProbe.timeoutSeconds }}
-          {{- end }}
+            initialDelaySeconds: {{ .Values.services.statefulEditoast.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.services.statefulEditoast.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.services.statefulEditoast.livenessProbe.timeoutSeconds }}
 
-          {{- if not .Values.services.tileServer.readinessProbe.disabled }}
           readinessProbe:
             httpGet:
               path: /health
               port: http
-          {{- end }}
 
           env:
             - name: EDITOAST_PORT
-              value: "{{ .Values.services.tileServer.service.targetPort }}"
+              value: "{{ .Values.services.statefulEditoast.service.targetPort }}"
 
             - name: OSRDYNE_API_URL
               value: http://{{ include "osrd.fullname" . }}-osrdyne
@@ -97,12 +92,12 @@ spec:
             {{- toYaml . | nindent 12 }}
             {{- end }}
 
-            {{- with .Values.services.tileServer.env | default dict }}
+            {{- with .Values.services.statefulEditoast.env | default dict }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
             
           resources:
-            {{- toYaml .Values.services.tileServer.resources | nindent 12 }}
+            {{- toYaml .Values.services.statefulEditoast.resources | nindent 12 }}
 
       nodeSelector:
         {{- toYaml (merge (.Values.nodeSelector | default dict) (.Values.services.gateway.nodeSelector | default dict)) | nindent 8 }}
@@ -114,7 +109,7 @@ spec:
         {{- with .Values.tolerations | default dict }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        {{- with .Values.services.tileServer.tolerations | default dict }}
+        {{- with .Values.services.statefulEditoast.tolerations | default dict }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
 {{- end }}
