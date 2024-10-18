@@ -23,12 +23,10 @@ data:
     {{- end }}
     {{- end }}
 
-    {{- if .Values.services.tileServer.enabled }}
     [[targets]]
-    prefix = "/api/layers"
-    upstream = "http://{{ include "osrd.fullname" . }}-tile-server/layers"
+    prefix = "/api/infra"
+    upstream = "http://{{ include "osrd.fullname" . }}-stateful-editoast/infra"
     require_auth = true
-    {{- end }}
 
     [[targets]]
     prefix = "/api"

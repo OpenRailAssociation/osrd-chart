@@ -71,11 +71,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}-editoast
 {{- end }}
 
 {{/*
-Common labels Tile Server
+Common labels stateful Editoast
 */}}
-{{- define "osrd.labels.tileServer" -}}
+{{- define "osrd.labels.statefulEditoast" -}}
 helm.sh/chart: {{ include "osrd.chart" . }}
-{{ include "osrd.selectorLabels.tileServer" . }}
+{{ include "osrd.selectorLabels.statefulEditoast" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -83,11 +83,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
 {{/*
-Selector labels Tile Server
+Selector labels stateful Editoast
 */}}
-{{- define "osrd.selectorLabels.tileServer" -}}
-app.kubernetes.io/name: {{ include "osrd.name" . }}-tile-server
-app.kubernetes.io/instance: {{ .Release.Name }}-tile-server
+{{- define "osrd.selectorLabels.statefulEditoast" -}}
+app.kubernetes.io/name: {{ include "osrd.name" . }}-stateful-editoast
+app.kubernetes.io/instance: {{ .Release.Name }}-stateful-editoast
 {{- end }}
 
 {{/*
