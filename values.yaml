@@ -50,7 +50,7 @@ services:
       api_address: "0.0.0.0:80"
       default_message_ttl:
       max_length:
-      max_length_bytes: 
+      max_length_bytes:
     annotations: {}
     labels: {}
     nodeSelector: {}
@@ -86,26 +86,6 @@ services:
       telemetry: null
     autoscaling:
       type: NoScaling
-
-  statefulEditoast:
-    enabled: true
-    replicaCount: 1
-    service:
-      type: ClusterIP
-      port: 80
-      targetPort: 80
-    livenessProbe:
-      disabled: false
-      initialDelaySeconds: 0
-      periodSeconds: 10
-      timeoutSeconds: 1
-    annotations: {}
-    labels: {}
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-    resources: {}
-    env: []
 
   gateway:
     enabled: true
@@ -174,6 +154,28 @@ services:
     init:
       enabled: true
       extend: ""
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []
+
+  statefulEditoast:
+    enabled: true
+    replicaCount: 1
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 80
+    livenessProbe:
+      disabled: false
+      initialDelaySeconds: 0
+      periodSeconds: 10
+      timeoutSeconds: 1
+    readinessProbe:
+      disabled: false
+    annotations: {}
     labels: {}
     nodeSelector: {}
     tolerations: []
