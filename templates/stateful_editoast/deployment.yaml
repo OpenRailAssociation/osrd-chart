@@ -38,18 +38,24 @@ spec:
               containerPort: {{ .Values.services.statefulEditoast.service.port }}
               protocol: TCP
 
+          {{- if not .Values.services.statefulEditoast.livenessProbe.disabled }}
           livenessProbe:
-            httpGet:
-              path: /health
-              port: http
+            exec:
+              command:
+                - /bin/sh
+                - "-c"
+                - 'ps ax | grep -q "editoast" && /usr/local/bin/editoast healthcheck'
             initialDelaySeconds: {{ .Values.services.statefulEditoast.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.services.statefulEditoast.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.services.statefulEditoast.livenessProbe.timeoutSeconds }}
+          {{- end }}
 
+          {{- if not .Values.services.statefulEditoast.readinessProbe.disabled }}
           readinessProbe:
             httpGet:
               path: /health
               port: http
+          {{- end }}
 
           env:
             - name: EDITOAST_PORT
@@ -95,7 +101,7 @@ spec:
             {{- with .Values.services.statefulEditoast.env | default dict }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            
+
           resources:
             {{- toYaml .Values.services.statefulEditoast.resources | nindent 12 }}
 
