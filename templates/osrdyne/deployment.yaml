@@ -64,7 +64,7 @@ spec:
 
           env:
             - name: OSRDYNE__AMQP_URI
-              {{- $amqp := .Values.endpoints.amqp }}
+              {{- $amqp := .Values.endpoints.amqp.url }}
               {{- if eq (typeOf $amqp) "map" }}
               valueFrom:
                 {{- toYaml $amqp.valueFrom | nindent 6 }}
@@ -73,7 +73,7 @@ spec:
               {{- end }}
 
             - name: OSRDYNE__MANAGEMENT_URI
-              {{- $amqpManagement := .Values.endpoints.amqpManagement }}
+              {{- $amqpManagement := .Values.endpoints.amqp.management }}
               {{- if eq (typeOf $amqpManagement) "map" }}
               valueFrom:
                 {{- toYaml $amqpManagement.valueFrom | nindent 6 }}
@@ -83,12 +83,12 @@ spec:
        
             {{- if (eq .Values.services.core.autoscaling.type "Keda") }}
             - name: OSRDYNE__WORKER_DRIVER__AUTOSCALING__AMQP_HOST
-              {{- $amqp := .Values.endpoints.amqp }}
-              {{- if eq (typeOf $amqp) "map" }}
+              {{- $amqpManagementWithVhost := .Values.endpoints.managementWithVhost }}
+              {{- if eq (typeOf $amqpManagementWithVhost) "map" }}
               valueFrom:
-                {{- toYaml $amqp.valueFrom | nindent 6 }}
+                {{- toYaml $amqpManagementWithVhost.valueFrom | nindent 6 }}
               {{- else }}
-              value: "{{ $amqp }}"
+              value: "{{ $amqpManagementWithVhost }}"
               {{- end }}
             {{- end }}
 

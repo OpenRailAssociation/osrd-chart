@@ -69,7 +69,7 @@ spec:
               value: "{{ .Values.endpoints.public }}/api"
 
             - name: OSRD_MQ_URL
-              {{- $amqp := .Values.endpoints.amqp }}
+              {{- $amqp := .Values.endpoints.amqp.url }}
               {{- if eq (typeOf $amqp) "map" }}
               valueFrom:
                 {{- toYaml $amqp.valueFrom | nindent 6 }}
