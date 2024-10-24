@@ -15,8 +15,10 @@ affinity: {}
 # in the env variable that uses it (merged directly).
 endpoints:
   public: https://my-osrd-instance.org
-  amqp: "amqp://osrd:password@rabbitmq:5672/%2f"
-  amqpManagement: "http://osrd:password@rabbitmq:15672"
+  amqp:
+    url: "amqp://osrd:password@rabbitmq:5672/%2f"
+    management: "http://osrd:password@rabbitmq:15672"
+    managementWithVhost: "http://osrd:password@rabbitmq:15672/%2f"
   postgresql: "postgres://osrd:password@postgres:5432/osrd"
   redis: redis://username:pwd@redis:6379/0
 
