@@ -83,7 +83,7 @@ spec:
        
             {{- if (eq .Values.services.core.autoscaling.type "Keda") }}
             - name: OSRDYNE__WORKER_DRIVER__AUTOSCALING__AMQP_HOST
-              {{- $amqpManagementWithVhost := .Values.endpoints.managementWithVhost }}
+              {{- $amqpManagementWithVhost := .Values.endpoints.amqp.managementWithVhost }}
               {{- if eq (typeOf $amqpManagementWithVhost) "map" }}
               valueFrom:
                 {{- toYaml $amqpManagementWithVhost.valueFrom | nindent 6 }}
