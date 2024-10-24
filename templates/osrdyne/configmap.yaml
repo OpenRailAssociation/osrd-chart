@@ -52,8 +52,6 @@ data:
           - name: JAVA_TOOL_OPTIONS
             value: {{ if eq .Values.services.core.config.telemetry "opentelemetry" -}}
               "-javaagent:/app/opentelemetry-javaagent.jar"
-            {{- else if eq .Values.services.core.config.telemetry "datadog" -}}
-              "-javaagent:/app/dd-java-agent.jar"
             {{- end -}}
 
         {{- with .Values.services.core.resources }}
