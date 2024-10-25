@@ -43,8 +43,8 @@ services:
     livenessProbe:
       disabled: false
       initialDelaySeconds: 5
-      periodSeconds: 60
-      timeoutSeconds: 20
+      periodSeconds: 10
+      timeoutSeconds: 3
     readinessProbe:
       disabled: false
     config:
@@ -144,7 +144,7 @@ services:
       disabled: false
       initialDelaySeconds: 0
       periodSeconds: 10
-      timeoutSeconds: 1
+      timeoutSeconds: 3
     readinessProbe:
       disabled: false
     hpa:
@@ -174,7 +174,7 @@ services:
       disabled: false
       initialDelaySeconds: 0
       periodSeconds: 10
-      timeoutSeconds: 1
+      timeoutSeconds: 3
     readinessProbe:
       disabled: false
     annotations: {}
