@@ -69,27 +69,27 @@ spec:
 
             - name: OSRD_MQ_URL
               {{- $amqp := .Values.endpoints.amqp.url }}
-              {{- if eq (typeOf $amqp) "map" }}
+              {{- if eq (kindOf $amqp) "map" }}
               valueFrom:
-                {{- toYaml $amqp.valueFrom | nindent 6 }}
+                {{- toYaml $amqp.valueFrom | nindent 16 }}
               {{- else }}
               value: "{{ $amqp }}"
               {{- end }}
 
             - name: DATABASE_URL
               {{- $postgresql := .Values.endpoints.postgresql }}
-              {{- if eq (typeOf $postgresql) "map" }}
+              {{- if eq (kindOf $postgresql) "map" }}
               valueFrom:
-                {{- toYaml $postgresql.valueFrom | nindent 6 }}
+                {{- toYaml $postgresql.valueFrom | nindent 16 }}
               {{- else }}
               value: "{{ $postgresql }}"
               {{- end }}
 
             - name: VALKEY_URL
               {{- $redis := .Values.endpoints.redis }}
-              {{- if eq (typeOf $redis) "map" }}
+              {{- if eq (kindOf $redis) "map" }}
               valueFrom:
-                {{- toYaml $redis.valueFrom | nindent 6 }}
+                {{- toYaml $redis.valueFrom | nindent 16 }}
               {{- else }}
               value: "{{ $redis }}"
               {{- end }}
