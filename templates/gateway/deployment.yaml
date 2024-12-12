@@ -41,11 +41,6 @@ spec:
             - name: config
               mountPath: /srv/gateway.toml
               subPath: gateway.toml
-            {{- if .Values.services.gateway.extrahelp }}
-            - name: extrahelp
-              mountPath: /srv/front/help.md
-              subPath: help.md
-            {{- end }}
 
             {{- with (.Values.services.gateway.volumeMounts | default list) }}
             {{- toYaml . | nindent 12 }}
@@ -77,11 +72,6 @@ spec:
         - name: config
           configMap:
             name: {{ include "osrd.fullname" . }}-gateway-config
-        {{- if .Values.services.gateway.extrahelp }}
-        - name: extrahelp
-          configMap:
-            name: {{ include "osrd.fullname" . }}-gateway-extrahelp
-        {{- end }}
 
         {{- with (.Values.services.gateway.volumes | default list) }}
         {{- toYaml . | nindent 8 }}
