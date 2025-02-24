@@ -95,6 +95,11 @@ spec:
               value: "{{ $redis }}"
               {{- end }}
 
+            - name: EDITOAST_OPENFGA_URL
+              value: "http://{{ include "osrd.fullname" . }}-openfga"
+            - name: EDITOAST_OPENFGA_STORE
+              value: osrd-editoast
+
             {{- with .Values.services.editoast.env | default dict }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

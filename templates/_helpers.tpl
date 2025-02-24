@@ -31,6 +31,26 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Common labels OpenFGA
+*/}}
+{{- define "osrd.labels.openfga" -}}
+helm.sh/chart: {{ include "osrd.chart" . }}
+{{ include "osrd.selectorLabels.openfga" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
+{{/*
+Selector labels OpenFGA
+*/}}
+{{- define "osrd.selectorLabels.openfga" -}}
+app.kubernetes.io/name: {{ include "osrd.name" . }}-openfga
+app.kubernetes.io/instance: {{ .Release.Name }}-openfga
+{{- end }}
+
+{{/*
 Common labels Osrdyne
 */}}
 {{- define "osrd.labels.osrdyne" -}}

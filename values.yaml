@@ -20,6 +20,7 @@ endpoints:
     management: "http://osrd:password@rabbitmq:15672"
     managementWithVhost: "http://osrd:password@rabbitmq:15672/%2f"
   postgresql: "postgres://osrd:password@postgres:5432/osrd"
+  postgresqlOpenFGA: "postgres://osrd:password@postgres:5432/osrd?search_path=openfga"
   redis: redis://username:pwd@redis:6379/0
 
 # Container images related settings
@@ -31,9 +32,29 @@ images:
   core: ghcr.io/openrailassociation/osrd-edge/osrd-core:dev
   osrdyne: ghcr.io/openrailassociation/osrd-edge/osrd-osrdyne:dev
   images: ghcr.io/openrailassociation/osrd-edge/osrd-images:v1.0.2
+  openfga: openfga/openfga:v1.8.6
 
 # Services direct settings and overides
 services:
+  openfga:
+    enabled: false
+    service:
+      type: ClusterIP
+      port: 80
+      targetPort: 80
+    readinessProbe:
+      disabled: false
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      timeoutSeconds: 3
+    annotations: {}
+    labels: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    resources: {}
+    env: []
+
   osrdyne:
     enabled: true
     service:
