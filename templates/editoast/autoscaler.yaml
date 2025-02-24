@@ -4,6 +4,14 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "osrd.fullname" . }}-editoast-hpa
+  {{- with .Values.services.editoast.hpa.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.services.editoast.hpa.labels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   maxReplicas: {{ .Values.services.editoast.hpa.maxReplicas }}
   minReplicas: {{ .Values.services.editoast.hpa.minReplicas }}
