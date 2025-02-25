@@ -29,7 +29,7 @@ spec:
       initContainers:
         - name: openfga-migrate
           image: "{{ .Values.images.openfga }}"
-          command: ["migrate"]
+          command: ["openfga", "migrate"]
           env:
             - name: OPENFGA_DATASTORE_ENGINE
               value: "postgres"
