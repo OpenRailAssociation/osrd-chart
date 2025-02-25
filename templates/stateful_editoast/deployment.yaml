@@ -99,7 +99,7 @@ spec:
               {{- end }}
 
             - name: EDITOAST_OPENFGA_URL
-              value: "http://{{ include "osrd.fullname" . }}-openfga"
+              value: "http://{{ include "osrd.fullname" . }}-openfga:{{ .Values.services.openfga.service.port }}"
 
             {{- with .Values.services.editoast.env | default dict }}
             {{- toYaml . | nindent 12 }}
