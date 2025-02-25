@@ -13,7 +13,7 @@ metadata:
   annotations:
     {{- toYaml $mergedAnnotations | nindent 4 }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.services.openfga.replicaCount }}
   selector:
     matchLabels:
       {{- include "osrd.selectorLabels.openfga" . | nindent 6 }}
@@ -22,7 +22,10 @@ spec:
      labels:
         {{- include "osrd.selectorLabels.openfga" . | nindent 8 }}
     spec:
-
+      {{- with (.Values.imagePullSecrets | default list) }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       initContainers:
         - name: openfga-migrate
           image: "{{ .Values.images.openfga }}"
