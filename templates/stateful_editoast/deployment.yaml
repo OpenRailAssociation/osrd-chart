@@ -56,6 +56,9 @@ spec:
             httpGet:
               path: /health
               port: http
+            initialDelaySeconds: {{ .Values.services.statefulEditoast.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.services.statefulEditoast.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.services.statefulEditoast.readinessProbe.timeoutSeconds }}
           {{- end }}
 
           env:

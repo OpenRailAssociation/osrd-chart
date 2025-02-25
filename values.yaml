@@ -169,6 +169,9 @@ services:
       timeoutSeconds: 3
     readinessProbe:
       disabled: false
+      initialDelaySeconds: 05
+      periodSeconds: 10
+      timeoutSeconds: 3
     hpa:
       enabled: true
       minReplicas: 2
@@ -201,6 +204,9 @@ services:
       timeoutSeconds: 3
     readinessProbe:
       disabled: false
+      initialDelaySeconds: 05
+      periodSeconds: 10
+      timeoutSeconds: 3
     annotations: {}
     labels: {}
     nodeSelector: {}
