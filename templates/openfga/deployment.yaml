@@ -49,7 +49,8 @@ spec:
           command: ["/openfga"]
           args: ["run"]
           ports:
-            - containerPort: {{ .Values.services.openfga.service.targetPort }}
+            - name: openfga-port
+              containerPort: {{ .Values.services.openfga.service.targetPort }}
           env:
             - name: OPENFGA_DATASTORE_ENGINE
               value: "postgres"
@@ -73,7 +74,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /healthz
-              port: http
+              port: openfga-port
           {{- end }}
 
       nodeSelector:
