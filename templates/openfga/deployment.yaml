@@ -19,8 +19,11 @@ spec:
       {{- include "osrd.selectorLabels.openfga" . | nindent 6 }}
   template:
     metadata:
-     labels:
-        {{- include "osrd.selectorLabels.openfga" . | nindent 8 }}
+      labels:
+        rollme: {{ randAlphaNum 5 | quote }}
+        {{- toYaml $mergedLabels | nindent 8 }}
+      annotations:
+        {{- toYaml $mergedAnnotations | nindent 8 }}
     spec:
       {{- with (.Values.imagePullSecrets | default list) }}
       imagePullSecrets:
