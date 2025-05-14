@@ -1,5 +1,11 @@
 # OSRD Helm Chart Repository
 
+# ARCHIVED REPOSITORY
+
+Find the current chart in the main osrd repo here: https://github.com/OpenRailAssociation/osrd/tree/dev/chart
+
+---------
+
 This repository contains Helm charts for deploying OSRD, which consists of three main components:
 
 - **Gateway**: Serves the front end, handles authentication, and proxies requests to the backend.
